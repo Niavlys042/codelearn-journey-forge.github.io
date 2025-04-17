@@ -1,73 +1,90 @@
-# Welcome to your Lovable project
 
-## Project info
+# CodeLearn - Plateforme d'Apprentissage de Programmation
 
-**URL**: https://lovable.dev/projects/64df0ebb-045e-41d8-8d3a-321362f8b143
+CodeLearn est une application web d'apprentissage de langages de programmation en ligne, offrant des cours interactifs, un système d'authentification, des paiements et des certifications.
 
-## How can I edit this code?
+## Structure du Projet
 
-There are several ways of editing your application.
+Le projet est divisé en deux parties principales :
 
-**Use Lovable**
+- **client** - Frontend React/TypeScript avec Tailwind CSS
+- **server** - Backend Python avec Flask et MySQL
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/64df0ebb-045e-41d8-8d3a-321362f8b143) and start prompting.
+## Installation et Exécution
 
-Changes made via Lovable will be committed automatically to this repo.
+### Frontend (Client)
 
-**Use your preferred IDE**
+1. Installez les dépendances :
+```bash
+npm install
+```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+2. Lancez l'application en mode développement :
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+L'application sera accessible à l'adresse [http://localhost:8080](http://localhost:8080).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Backend (Serveur)
 
-**Use GitHub Codespaces**
+1. Créez un environnement virtuel Python :
+```bash
+cd server
+python -m venv venv
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+2. Activez l'environnement virtuel :
+   - Windows : `venv\Scripts\activate`
+   - macOS/Linux : `source venv/bin/activate`
 
-## What technologies are used for this project?
+3. Installez les dépendances :
+```bash
+pip install -r requirements.txt
+```
 
-This project is built with:
+4. Configurez la base de données MySQL :
+```bash
+mysql -u root -p < database/schema.sql
+```
 
-- Vite
-- TypeScript
+5. Lancez le serveur :
+```bash
+python app.py
+```
+
+Le serveur sera accessible à l'adresse [http://localhost:5000](http://localhost:5000).
+
+## Fonctionnalités
+
+- **Authentification** : Inscription et connexion des utilisateurs
+- **Catalogue de Cours** : Exploration et recherche de cours par langage et niveau
+- **Apprentissage Interactif** : Modules de cours structurés avec exercices pratiques
+- **Système de Paiement** : Abonnements pour accéder au contenu premium
+- **Certifications** : Obtention de certificats après avoir complété les cours
+
+## Technologies Utilisées
+
+### Frontend
 - React
-- shadcn-ui
+- TypeScript
 - Tailwind CSS
+- React Router
+- Lucide React (icônes)
 
-## How can I deploy this project?
+### Backend
+- Python
+- Flask
+- MySQL
+- JWT (authentification)
 
-Simply open [Lovable](https://lovable.dev/projects/64df0ebb-045e-41d8-8d3a-321362f8b143) and click on Share -> Publish.
+## Captures d'écran
 
-## Can I connect a custom domain to my Lovable project?
+(Des captures d'écran de l'application seraient normalement affichées ici)
 
-Yes, you can!
+## Roadmap
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Intégration de fonctionnalités supplémentaires pour les exercices interactifs
+- Mise en place d'un système de forum communautaire
+- Ajout de fonctionnalités sociales et de partage
+- Implémentation d'un tableau de bord d'analyse pour les utilisateurs
