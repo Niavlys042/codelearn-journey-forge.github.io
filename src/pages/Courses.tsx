@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -161,7 +160,12 @@ const Courses = () => {
   
   const handleCourseClick = (courseId: number) => {
     // Redirection vers la page détaillée du cours
-    navigate(`/courses/${courseId}`);
+    navigate(`/course/${courseId}`);
+  };
+  
+  const handleLearningPathClick = (pathId: string) => {
+    // Redirection vers la page détaillée du parcours
+    navigate(`/learning-path/${pathId}`);
   };
 
   return (
@@ -450,6 +454,7 @@ const Courses = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 {
+                  id: "web-frontend",
                   title: "Développeur Web Front-end",
                   description: "Maîtrisez HTML, CSS et JavaScript pour créer des interfaces web interactives.",
                   courses: 5,
@@ -457,6 +462,7 @@ const Courses = () => {
                   icon: <Code className="h-12 w-12 text-blue-500" />
                 },
                 {
+                  id: "data-science",
                   title: "Data Science avec Python",
                   description: "Apprenez à analyser et visualiser des données avec Python, Pandas et Matplotlib.",
                   courses: 4,
@@ -464,14 +470,15 @@ const Courses = () => {
                   icon: <Code className="h-12 w-12 text-green-500" />
                 },
                 {
+                  id: "mobile-dev",
                   title: "Développement Mobile",
                   description: "Créez des applications mobiles natives avec Swift pour iOS et Java pour Android.",
                   courses: 6,
                   duration: "50 heures",
                   icon: <Code className="h-12 w-12 text-purple-500" />
                 }
-              ].map((path, index) => (
-                <Card key={index} className="hover:shadow-md transition-all">
+              ].map((path) => (
+                <Card key={path.id} className="hover:shadow-md transition-all cursor-pointer" onClick={() => handleLearningPathClick(path.id)}>
                   <CardHeader>
                     <div className="flex justify-center mb-4">
                       {path.icon}
