@@ -16,6 +16,7 @@ import Dashboard from "./pages/Dashboard";
 import Certificate from "./pages/Certificate";
 import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
+import Admin from "./pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/certificate" element={<Certificate />} />
           <Route path="/certificate/:certificateId" element={<Certificate />} />
+          <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -47,3 +49,4 @@ const App = () => (
 );
 
 export default App;
+

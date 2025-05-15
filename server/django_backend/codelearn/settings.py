@@ -68,8 +68,12 @@ WSGI_APPLICATION = 'codelearn.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'codelearn_db',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
@@ -128,3 +132,4 @@ CORS_ALLOW_CREDENTIALS = True
 
 # User model
 AUTH_USER_MODEL = 'users.User'
+

@@ -7,10 +7,12 @@ from .views import (
     RegisterView, 
     LoginView, 
     LogoutView,
-    UserProfileView
+    UserProfileView,
+    AdminDashboardView
 )
 
 router = DefaultRouter()
+router.register(r'all', UserViewSet, basename='user')
 router.register(r'progress', UserCourseProgressViewSet, basename='user-progress')
 
 urlpatterns = [
@@ -19,4 +21,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', UserProfileView.as_view(), name='profile'),
+    path('admin/dashboard/', AdminDashboardView.as_view(), name='admin-dashboard'),
 ]
+
