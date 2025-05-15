@@ -6,17 +6,9 @@ from .models import User, UserCourseProgress
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_premium', 'is_admin',
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_premium', 
                   'bio', 'profile_picture', 'total_learning_time', 'courses_completed']
         read_only_fields = ['id', 'is_premium', 'total_learning_time', 'courses_completed']
-
-class AdminUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_premium', 'is_admin',
-                  'is_active', 'date_joined', 'last_login', 'bio', 'profile_picture', 
-                  'total_learning_time', 'courses_completed']
-        read_only_fields = ['id', 'date_joined']
 
 class UserCourseProgressSerializer(serializers.ModelSerializer):
     course_title = serializers.CharField(source='course.title', read_only=True)
@@ -57,4 +49,3 @@ class LoginSerializer(serializers.Serializer):
         if not user.is_active:
             raise serializers.ValidationError("Ce compte a été désactivé.")
         return {'user': user}
-

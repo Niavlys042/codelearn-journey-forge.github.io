@@ -6,8 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { LogIn, Code, ArrowRight, Mail, Lock, ShieldCheck } from "lucide-react";
-import { toast } from "@/components/ui/use-toast";
+import { LogIn, Code, ArrowRight, Mail, Lock } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -32,45 +31,17 @@ const Login = () => {
     setError("");
 
     try {
-      // Appel à l'API de connexion
-      const response = await fetch('/api/users/login/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.non_field_errors?.[0] || "Erreur lors de la connexion");
-      }
-      
-      const data = await response.json();
-      
-      // Stockage du token et des informations utilisateur
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      
-      // Message de succès
-      toast({
-        title: "Connexion réussie",
-        description: `Bienvenue ${data.user.first_name || data.user.username}!`,
-      });
-      
-      // Redirection en fonction du rôle
-      if (data.user.is_admin || data.user.is_staff) {
-        navigate("/admin");
-      } else {
+      // Simulation de connexion réussie (à remplacer par l'appel à l'API backend)
+      setTimeout(() => {
+        console.log("Tentative de connexion avec:", { email, password, rememberMe });
+        
+        // Redirection vers le tableau de bord après connexion
         navigate("/dashboard");
-      }
+        
+        setIsLoading(false);
+      }, 1500);
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Erreur lors de la connexion. Veuillez réessayer.");
-      }
-    } finally {
+      setError("Erreur lors de la connexion. Veuillez réessayer.");
       setIsLoading(false);
     }
   };
@@ -197,20 +168,6 @@ const Login = () => {
                   Facebook
                 </Button>
               </div>
-              
-              <div className="mt-4 pt-4 border-t">
-                <div className="text-center text-sm font-semibold mb-2">
-                  <span className="flex items-center justify-center">
-                    <ShieldCheck className="h-4 w-4 mr-1 text-primary" />
-                    Accès administrateur
-                  </span>
-                </div>
-                <div className="text-xs text-muted-foreground text-center">
-                  <p>Pour tester l'accès administrateur:</p>
-                  <p>Email: admin@codelearn.com</p>
-                  <p>Mot de passe: admin1234</p>
-                </div>
-              </div>
             </CardContent>
             
             <CardFooter className="flex flex-col">
@@ -232,4 +189,3 @@ const Login = () => {
 };
 
 export default Login;
-

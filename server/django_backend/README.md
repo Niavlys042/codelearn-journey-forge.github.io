@@ -14,48 +14,31 @@ Le backend est organisé en plusieurs applications Django :
 
 ## Installation et configuration
 
-1. Démarrer XAMPP et activer les services Apache et MySQL
-
-2. Créer une base de données MySQL nommée `codelearn_db` :
-```sql
-CREATE DATABASE codelearn_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-
-3. Créer un environnement virtuel Python :
+1. Créer un environnement virtuel Python :
 ```bash
 python -m venv venv
 ```
 
-4. Activer l'environnement virtuel :
+2. Activer l'environnement virtuel :
    - Windows : `venv\Scripts\activate`
    - macOS/Linux : `source venv/bin/activate`
 
-5. Installer les dépendances :
+3. Installer les dépendances :
 ```bash
 pip install -r ../requirements.txt
 ```
 
-6. Effectuer les migrations :
+4. Effectuer les migrations :
 ```bash
 python manage.py migrate
 ```
 
-7. Créer un superutilisateur :
+5. Créer un superutilisateur :
 ```bash
 python manage.py createsuperuser
 ```
 
-8. Créer un utilisateur administrateur pour la plateforme :
-```bash
-python manage.py shell
-```
-```python
-from users.models import User
-User.objects.create_user(username='admin', email='admin@codelearn.com', password='admin1234', is_admin=True, is_staff=True)
-exit()
-```
-
-9. Lancer le serveur de développement :
+6. Lancer le serveur de développement :
 ```bash
 python manage.py runserver
 ```
@@ -71,13 +54,6 @@ Le serveur sera accessible à l'adresse [http://localhost:8000](http://localhost
 - `POST /api/users/logout/` : Déconnexion utilisateur
 - `GET /api/users/profile/` : Récupérer le profil utilisateur
 - `PUT /api/users/profile/` : Mettre à jour le profil utilisateur
-
-### Administration
-
-- `GET /api/users/all/` : Liste de tous les utilisateurs (admin uniquement)
-- `POST /api/users/all/{id}/toggle_active/` : Activer/désactiver un utilisateur (admin uniquement)
-- `POST /api/users/all/{id}/toggle_premium/` : Activer/désactiver le statut premium (admin uniquement)
-- `GET /api/users/admin/dashboard/` : Statistiques pour le tableau de bord admin
 
 ### Cours
 
@@ -100,17 +76,16 @@ Le serveur sera accessible à l'adresse [http://localhost:8000](http://localhost
 
 ### Certificats
 
-- `GET /api/certificates/certificates/` : Liste des certificats de l'utilisateur
-- `GET /api/certificates/certificates/{id}/` : Détails d'un certificat
-- `POST /api/certificates/certificates/generate/` : Générer un certificat pour un cours terminé
-- `GET /api/certificates/certificates/{id}/verify/` : Vérifier l'authenticité d'un certificat
-- `GET /api/certificates/certificates/{certificate_id}/public-verify/` : Vérification publique d'un certificat
+- `GET /api/certificates/` : Liste des certificats de l'utilisateur
+- `GET /api/certificates/{id}/` : Détails d'un certificat
+- `POST /api/certificates/generate/` : Générer un certificat pour un cours terminé
+- `GET /api/certificates/{id}/verify/` : Vérifier l'authenticité d'un certificat
 
 ## Modèle de données
 
 Le modèle de données comprend les entités principales suivantes :
 
-- **User** : Utilisateurs de la plateforme, y compris administrateurs
+- **User** : Utilisateurs de la plateforme
 - **Course** : Cours disponibles sur la plateforme
 - **Module** : Modules composant un cours
 - **Section** : Sections de contenu dans un module
@@ -122,4 +97,3 @@ Le modèle de données comprend les entités principales suivantes :
 - **Certificate** : Certificats obtenus par les utilisateurs
 
 Pour plus de détails, consultez les fichiers `models.py` de chaque application.
-

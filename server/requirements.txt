@@ -1,21 +1,18 @@
 
-# Base Django requirements
+# Base Flask requirements
+Flask==2.2.3
+Flask-CORS==3.0.10
+PyJWT==2.6.0
+
+# Django and related packages
 Django==4.2.0
 djangorestframework==3.14.0
 django-cors-headers==3.14.0
-drf-nested-routers==0.93.4
 
 # Database connectors
-mysqlclient==2.1.1
-# SQLite3 est inclus dans la bibliothèque standard Python
-
-# Image handling
-Pillow==9.4.0
-
-# Authentication
-PyJWT==2.6.0
+mysql-connector-python==8.0.32
+# Note: SQLite3 is included in Python standard library, no need to install separately
 
 # Utils
 python-dotenv==1.0.0
 requests==2.28.2
-
