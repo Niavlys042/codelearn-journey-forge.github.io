@@ -9,9 +9,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { LogIn, Code, ArrowRight, Mail, Lock } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -31,17 +33,44 @@ const Login = () => {
     setError("");
 
     try {
-      // Simulation de connexion réussie (à remplacer par l'appel à l'API backend)
-      setTimeout(() => {
-        console.log("Tentative de connexion avec:", { email, password, rememberMe });
-        
-        // Redirection vers le tableau de bord après connexion
+      const response = await fetch("http://localhost:8000/api/users/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || data.non_field_errors || "Erreur lors de la connexion");
+      }
+
+      // Stockage des informations d'authentification
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      
+      toast({
+        title: "Connexion réussie",
+        description: "Bienvenue sur CodeLearn !",
+      });
+      
+      // Redirection vers le tableau de bord administrateur ou utilisateur
+      if (data.is_admin) {
+        navigate("/admin");
+      } else {
         navigate("/dashboard");
-        
-        setIsLoading(false);
-      }, 1500);
-    } catch (err) {
-      setError("Erreur lors de la connexion. Veuillez réessayer.");
+      }
+      
+    } catch (err: any) {
+      setError(err.message || "Erreur lors de la connexion. Veuillez réessayer.");
+      toast({
+        title: "Erreur de connexion",
+        description: err.message || "Identifiants incorrects",
+        variant: "destructive",
+      });
+    } finally {
       setIsLoading(false);
     }
   };

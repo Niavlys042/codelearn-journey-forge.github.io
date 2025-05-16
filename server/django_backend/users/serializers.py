@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_premium', 
-                  'bio', 'profile_picture', 'total_learning_time', 'courses_completed']
+                  'is_admin', 'bio', 'profile_picture', 'total_learning_time', 'courses_completed']
         read_only_fields = ['id', 'is_premium', 'total_learning_time', 'courses_completed']
 
 class UserCourseProgressSerializer(serializers.ModelSerializer):

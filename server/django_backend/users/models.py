@@ -11,6 +11,7 @@ class User(AbstractUser):
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, verbose_name="Photo de profil")
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name="Date d'inscription")
     is_premium = models.BooleanField(default=False, verbose_name="Utilisateur premium")
+    is_admin = models.BooleanField(default=False, verbose_name="Administrateur")
     
     # Paramètres utilisateurs
     language_preference = models.CharField(max_length=10, default='fr', verbose_name="Langue préférée")
