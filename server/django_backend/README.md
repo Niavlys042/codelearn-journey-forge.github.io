@@ -45,6 +45,13 @@ python manage.py runserver
 
 Le serveur sera accessible à l'adresse [http://localhost:8000](http://localhost:8000).
 
+## Comptes utilisateurs par défaut
+
+L'application est préconfigurée avec le compte administrateur suivant:
+
+**Email**: admincodelearn@gmail.com
+**Mot de passe**: admin@123!
+
 ## API Endpoints
 
 ### Authentification
