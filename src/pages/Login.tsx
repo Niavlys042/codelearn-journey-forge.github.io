@@ -10,6 +10,7 @@ import { LogIn, Code, ArrowRight, Mail, Lock } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { useToast } from "@/hooks/use-toast";
+import { userService } from "@/services/api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -33,41 +34,42 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:8000/api/users/login/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.detail || data.non_field_errors || "Erreur lors de la connexion");
+      // Utiliser le service API au lieu de fetch direct
+      const response = await userService.login(email, password);
+      
+      if (response && response.data) {
+        const data = response.data;
+        
+        // Stockage des informations d'authentification avec la clé "authToken" pour être cohérent
+        localStorage.setItem("authToken", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        
+        toast({
+          title: "Connexion réussie",
+          description: "Bienvenue sur CodeLearn !",
+        });
+        
+        // Redirection vers le tableau de bord administrateur ou utilisateur
+        if (data.user && data.user.is_admin) {
+          navigate("/admin");
+        } else {
+          navigate("/dashboard");
+        }
       }
-
-      // Stockage des informations d'authentification
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      
-      toast({
-        title: "Connexion réussie",
-        description: "Bienvenue sur CodeLearn !",
-      });
-      
-      // Redirection vers le tableau de bord administrateur ou utilisateur
-      if (data.is_admin) {
-        navigate("/admin");
-      } else {
-        navigate("/dashboard");
-      }
-      
     } catch (err: any) {
-      setError(err.message || "Erreur lors de la connexion. Veuillez réessayer.");
+      let errorMessage = "Erreur lors de la connexion. Veuillez réessayer.";
+      
+      if (err.response && err.response.data) {
+        errorMessage = err.response.data.detail || 
+                      err.response.data.non_field_errors || 
+                      "Identifiants incorrects";
+      }
+      
+      setError(errorMessage);
+      
       toast({
         title: "Erreur de connexion",
-        description: err.message || "Identifiants incorrects",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {

@@ -1,9 +1,13 @@
 
 import axios from 'axios';
 
+// Base URL configuration - adjust this based on your environment
+// In development, this should point to your Django backend
+const API_BASE_URL = 'http://127.0.0.1:8000';
+
 // Création d'une instance axios avec la configuration de base
 const api = axios.create({
-  baseURL: '/api', // L'URL de base pour toutes les requêtes API
+  baseURL: `${API_BASE_URL}/api`, // L'URL de base pour toutes les requêtes API
   headers: {
     'Content-Type': 'application/json',
   },
@@ -19,6 +23,15 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Intercepteur pour gérer les erreurs de réponse
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error('API Error:', error);
+    return Promise.reject(error);
+  }
+);
 
 // Services pour les plans d'abonnement
 export const subscriptionService = {
