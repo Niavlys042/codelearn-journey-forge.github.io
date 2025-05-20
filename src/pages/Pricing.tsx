@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle, X } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { subscriptionService } from "@/services/api";
+import { toast } from "sonner";
 
 interface PlanFeature {
   name: string;
@@ -25,91 +27,131 @@ interface Plan {
   features: PlanFeature[];
 }
 
+// Taux de conversion: 1 EUR = environ 4500 Ariary (MGA)
+const EURO_TO_ARIARY_RATE = 4500;
+
 const Pricing = () => {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
   const navigate = useNavigate();
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const plans: Plan[] = [
-    {
-      id: "free",
-      name: "Gratuit",
-      description: "Pour commencer votre voyage d'apprentissage",
-      monthly: 0,
-      annual: 0,
-      currency: "€",
-      highlighted: false,
-      features: [
-        { name: "Accès à 5 cours de base", included: true },
-        { name: "Exercices limités", included: true },
-        { name: "Support communautaire", included: true },
-        { name: "Certificats de base", included: false },
-        { name: "Suivi de progression", included: false },
-        { name: "Exercices pratiques avancés", included: false },
-        { name: "Support prioritaire", included: false },
-        { name: "Accès aux projets guidés", included: false },
-        { name: "Contenu exclusif", included: false }
-      ]
-    },
-    {
-      id: "premium",
-      name: "Premium",
-      description: "Notre formule la plus populaire",
-      monthly: 19.99,
-      annual: 199.90,
-      currency: "€",
-      highlighted: true,
-      features: [
-        { name: "Accès à tous les cours", included: true },
-        { name: "Exercices illimités", included: true },
-        { name: "Support communautaire", included: true },
-        { name: "Certificats de base", included: true },
-        { name: "Suivi de progression", included: true },
-        { name: "Exercices pratiques avancés", included: true },
-        { name: "Support prioritaire", included: false },
-        { name: "Accès aux projets guidés", included: false },
-        { name: "Contenu exclusif", included: false }
-      ]
-    },
-    {
-      id: "pro",
-      name: "Pro",
-      description: "Pour les apprenants sérieux et professionnels",
-      monthly: 39.99,
-      annual: 399.90,
-      currency: "€",
-      highlighted: false,
-      features: [
-        { name: "Accès à tous les cours", included: true },
-        { name: "Exercices illimités", included: true },
-        { name: "Support communautaire", included: true },
-        { name: "Certificats de base", included: true },
-        { name: "Suivi de progression", included: true },
-        { name: "Exercices pratiques avancés", included: true },
-        { name: "Support prioritaire", included: true },
-        { name: "Accès aux projets guidés", included: true },
-        { name: "Contenu exclusif", included: true }
-      ]
-    }
-  ];
+  useEffect(() => {
+    // Charger les plans d'abonnement depuis l'API
+    const fetchPlans = async () => {
+      try {
+        // Si l'API est disponible, nous pouvons utiliser ce code
+        // const response = await subscriptionService.getPlans();
+        // setPlans(response.data);
+        
+        // Pour le moment, utilisons les plans statiques convertis en Ariary
+        setPlans([
+          {
+            id: "free",
+            name: "Gratuit",
+            description: "Pour commencer votre voyage d'apprentissage",
+            monthly: 0,
+            annual: 0,
+            currency: "Ar",
+            highlighted: false,
+            features: [
+              { name: "Accès à 5 cours de base", included: true },
+              { name: "Exercices limités", included: true },
+              { name: "Support communautaire", included: true },
+              { name: "Certificats de base", included: false },
+              { name: "Suivi de progression", included: false },
+              { name: "Exercices pratiques avancés", included: false },
+              { name: "Support prioritaire", included: false },
+              { name: "Accès aux projets guidés", included: false },
+              { name: "Contenu exclusif", included: false }
+            ]
+          },
+          {
+            id: "premium",
+            name: "Premium",
+            description: "Notre formule la plus populaire",
+            monthly: 19.99 * EURO_TO_ARIARY_RATE,
+            annual: 199.90 * EURO_TO_ARIARY_RATE,
+            currency: "Ar",
+            highlighted: true,
+            features: [
+              { name: "Accès à tous les cours", included: true },
+              { name: "Exercices illimités", included: true },
+              { name: "Support communautaire", included: true },
+              { name: "Certificats de base", included: true },
+              { name: "Suivi de progression", included: true },
+              { name: "Exercices pratiques avancés", included: true },
+              { name: "Support prioritaire", included: false },
+              { name: "Accès aux projets guidés", included: false },
+              { name: "Contenu exclusif", included: false }
+            ]
+          },
+          {
+            id: "pro",
+            name: "Pro",
+            description: "Pour les apprenants sérieux et professionnels",
+            monthly: 39.99 * EURO_TO_ARIARY_RATE,
+            annual: 399.90 * EURO_TO_ARIARY_RATE,
+            currency: "Ar",
+            highlighted: false,
+            features: [
+              { name: "Accès à tous les cours", included: true },
+              { name: "Exercices illimités", included: true },
+              { name: "Support communautaire", included: true },
+              { name: "Certificats de base", included: true },
+              { name: "Suivi de progression", included: true },
+              { name: "Exercices pratiques avancés", included: true },
+              { name: "Support prioritaire", included: true },
+              { name: "Accès aux projets guidés", included: true },
+              { name: "Contenu exclusif", included: true }
+            ]
+          }
+        ]);
+        
+        setLoading(false);
+      } catch (error) {
+        console.error("Erreur lors du chargement des plans:", error);
+        toast.error("Impossible de charger les plans d'abonnement");
+        setLoading(false);
+      }
+    };
 
-  const handlePlanSelect = (planId: string) => {
-    // Si c'est le plan gratuit, rediriger vers l'inscription
-    if (planId === "free") {
-      navigate("/signup");
-      return;
-    }
+    fetchPlans();
+  }, []);
 
-    // Pour les plans payants, rediriger vers la page de paiement avec les détails du plan
-    const selectedPlan = plans.find(plan => plan.id === planId);
-    if (selectedPlan) {
-      navigate("/payment", { 
-        state: { 
-          planName: selectedPlan.name,
-          planPrice: billingCycle === "monthly" ? selectedPlan.monthly : selectedPlan.annual,
-          planInterval: billingCycle === "monthly" ? "mensuel" : "annuel",
-          planFeatures: selectedPlan.features.filter(f => f.included).map(f => f.name)
-        } 
-      });
+  const handlePlanSelect = async (planId: string) => {
+    try {
+      // Si c'est le plan gratuit, rediriger vers l'inscription
+      if (planId === "free") {
+        navigate("/signup");
+        return;
+      }
+
+      // Pour les plans payants, rediriger vers la page de paiement avec les détails du plan
+      const selectedPlan = plans.find(plan => plan.id === planId);
+      if (selectedPlan) {
+        // Option 1: Utilisation de l'API pour créer un paiement
+        // const paymentData = {
+        //   plan_id: selectedPlan.id,
+        //   amount: billingCycle === "monthly" ? selectedPlan.monthly : selectedPlan.annual,
+        //   cycle: billingCycle
+        // };
+        // await paymentService.createPayment(paymentData);
+        
+        // Option 2: Navigation vers la page de paiement avec les détails
+        navigate("/payment", { 
+          state: { 
+            planName: selectedPlan.name,
+            planPrice: billingCycle === "monthly" ? selectedPlan.monthly : selectedPlan.annual,
+            planInterval: billingCycle === "monthly" ? "mensuel" : "annuel",
+            planFeatures: selectedPlan.features.filter(f => f.included).map(f => f.name),
+            currency: selectedPlan.currency
+          } 
+        });
+      }
+    } catch (error) {
+      console.error("Erreur lors de la sélection du plan:", error);
+      toast.error("Une erreur est survenue. Veuillez réessayer plus tard.");
     }
   };
 
@@ -120,6 +162,23 @@ const Pricing = () => {
     const discount = Math.round((1 - annual / monthlyTotal) * 100);
     return discount;
   };
+
+  // Formater les prix pour afficher les milliers avec un espace
+  const formatPrice = (price: number) => {
+    return price.toLocaleString('fr-FR');
+  };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-grow flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -177,7 +236,7 @@ const Pricing = () => {
                   <div className="mb-6">
                     <div className="flex items-end">
                       <span className="text-3xl font-bold">
-                        {billingCycle === "monthly" ? plan.monthly : plan.annual}
+                        {formatPrice(billingCycle === "monthly" ? plan.monthly : plan.annual)}
                       </span>
                       <span className="text-xl ml-1">{plan.currency}</span>
                       <span className="text-sm text-muted-foreground ml-2">
